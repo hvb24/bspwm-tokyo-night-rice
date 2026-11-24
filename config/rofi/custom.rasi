@@ -1,0 +1,104 @@
+/* Tokyo Night "Spotlight" launcher. Colours: colors.rasi (generated from ~/.config/theme/palette.sh). */
+@import "colors.rasi"
+
+* {
+    font:             "Noto Sans 12";
+    background-color: transparent;
+    text-color:       @fg;
+    margin:           0;
+    padding:          0;
+    spacing:          0;
+}
+
+window {
+    transparency:     "real";
+    location:         center;
+    anchor:           center;
+    y-offset:         -110px;
+    width:            700px;
+    background-color: @glass;
+    border:           1px;
+    border-color:     @divider;
+    border-radius:    18px;
+}
+
+mainbox {
+    children: [ inputbar, message, listview ];
+}
+
+inputbar {
+    padding:  18px 24px;
+    spacing:  16px;
+    children: [ textbox-icon, entry ];
+}
+
+textbox-icon {
+    expand:         false;
+    str:            "";
+    font:           "FiraCode Nerd Font Mono 20";
+    text-color:     @accent;
+    vertical-align: 0.5;
+}
+
+entry {
+    font:              "Noto Sans 18";
+    placeholder:       "Search";
+    placeholder-color: @fg-muted;
+    cursor-color:      @accent;
+    vertical-align:    0.5;
+}
+
+message {
+    padding:          10px 24px;
+    background-color: @bg-alt;
+    border:           1px 0 0;
+    border-color:     @divider;
+}
+
+textbox {
+    text-color: @fg-muted;
+}
+
+listview {
+    lines:        7;
+    columns:      1;
+    fixed-height: false;
+    dynamic:      true;
+    scrollbar:    false;
+    padding:      8px;
+    spacing:      2px;
+    border:       1px 0 0;
+    border-color: @divider;
+}
+
+element {
+    padding:       10px 16px;
+    spacing:       16px;
+    border-radius: 12px;
+}
+
+element selected.normal, element selected.active {
+    background-color: @sel;
+}
+
+element selected.urgent {
+    background-color: @alert;
+}
+
+element normal.active, element alternate.active {
+    text-color: @highlight;
+}
+
+element normal.urgent, element alternate.urgent {
+    text-color: @alert;
+}
+
+element-icon {
+    size:           2.2em;
+    vertical-align: 0.5;
+}
+
+element-text {
+    vertical-align: 0.5;
+    highlight:      bold #7aa2f7;
+}

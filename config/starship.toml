@@ -1,0 +1,60 @@
+# Starship prompt: minimal, fast, Tokyo Night palette
+"$schema" = 'https://starship.rs/config-schema.json'
+add_newline = true
+command_timeout = 500
+
+format = """
+$directory$git_branch$git_status$python$nodejs$rust$golang$cmd_duration
+$character"""
+
+palette = "tokyonight"
+
+[palettes.tokyonight]
+blue = "#7aa2f7"
+lavender = "#bb9af7"
+cyan = "#7dcfff"
+red = "#f7768e"
+muted = "#565f89"
+
+[directory]
+style = "bold blue"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = " "
+style = "lavender"
+format = "[on $symbol$branch]($style) "
+
+[git_status]
+style = "red"
+format = '([$all_status$ahead_behind]($style) )'
+
+[cmd_duration]
+min_time = 2000
+style = "muted"
+format = "[took $duration]($style) "
+
+[character]
+success_symbol = "[❯](bold blue)"
+error_symbol = "[❯](bold red)"
+
+[python]
+symbol = " "
+style = "cyan"
+format = '[$symbol$version]($style) '
+
+[nodejs]
+symbol = " "
+style = "cyan"
+format = '[$symbol$version]($style) '
+
+[rust]
+symbol = " "
+style = "cyan"
+format = '[$symbol$version]($style) '
+
+[golang]
+symbol = " "
+style = "cyan"
+format = '[$symbol$version]($style) '

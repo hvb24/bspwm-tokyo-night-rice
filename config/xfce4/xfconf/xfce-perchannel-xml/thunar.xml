@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="thunar" version="1.0">
+  <property name="misc-folders-first" type="bool" value="true"/>
+  <property name="misc-full-path-in-title" type="bool" value="true"/>
+  <property name="last-window-maximized" type="bool" value="false"/>
+</channel>

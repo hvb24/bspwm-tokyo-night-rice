@@ -1,0 +1,18 @@
+/* Rofi main config. Themes: custom.rasi (Spotlight), menu.rasi, grid.rasi, wallpaper.rasi; colours in colors.rasi. */
+configuration {
+    modes:                  "drun,window,run,filebrowser";
+    combi-modes:            "window,drun,run";
+    show-icons:             true;
+    icon-theme:             "Qogir-dark";        /* switch to Papirus-Dark once it is installed */
+    matching:               "fuzzy";
+    sorting-method:         "fzf";
+    drun-use-desktop-cache: true;
+    drun-display-format:    "{name}";
+    window-format:          "{c}   {t}";
+    /* vim-style list navigation; Control+j/k moved off accept/kill-line to avoid duplicates */
+    kb-accept-entry:        "Control+m,Return,KP_Enter";
+    kb-remove-to-eol:       "Control+Shift+e";
+    kb-row-up:              "Up,Control+p,Control+k";
+    kb-row-down:            "Down,Control+n,Control+j";
+}
+@theme "~/.config/rofi/custom.rasi"

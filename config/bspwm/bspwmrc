@@ -1,0 +1,51 @@
+#!/bin/sh
+# bspwm startup. Monitors and hardware come from ~/.config/theme/machine.sh.
+. "$HOME/.config/theme/machine.sh"
+
+pgrep -x sxhkd >/dev/null || sxhkd &
+
+# Monitor layout: primary gets desktops 1-5, the secondary (to its right) gets 6-10.
+[ -n "$POLYBAR_PRIMARY" ] || POLYBAR_PRIMARY=$(bspc query -M --names | head -1)
+if [ -n "$POLYBAR_SECONDARY" ]; then
+  xrandr --output "$POLYBAR_SECONDARY" --auto --right-of "$POLYBAR_PRIMARY"
+  bspc monitor "$POLYBAR_PRIMARY" -d 1 2 3 4 5
+  bspc monitor "$POLYBAR_SECONDARY" -d 6 7 8 9 10
+else
+  bspc monitor "$POLYBAR_PRIMARY" -d 1 2 3 4 5 6 7 8 9 10
+fi
+
+# General bspwm config
+bspc config border_width         2
+bspc config window_gap           12
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+# Workspace rules for newly opened windows: 1 terminal, 2 dev, 3 browser, 4 chat
+bspc rule -a firefox desktop='^3'
+bspc rule -a Google-chrome desktop='^3'
+bspc rule -a Code desktop='^2'
+bspc rule -a code-oss desktop='^2'
+bspc rule -a discord desktop='^4'
+bspc rule -a Pavucontrol state=floating
+bspc rule -a Nm-connection-editor state=floating
+bspc rule -a Screenkey manage=off
+
+# Colours (generated from theme/palette.sh) and wallpaper
+"$HOME/.config/theme/apply.sh" >/dev/null 2>&1
+"$HOME/.config/theme/wallpaper.sh" restore &
+
+# Compositor (blur, rounded corners, shadows)
+pgrep -x picom >/dev/null || picom --config "$HOME/.config/picom/picom.conf" &
+
+# Tray applets and authentication agent, only if installed
+if command -v nm-applet >/dev/null && ! pgrep -x nm-applet >/dev/null; then nm-applet & fi
+for agent in /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 /usr/lib/mate-polkit/polkit-mate-authentication-agent-1; do
+  if [ -x "$agent" ]; then
+    pgrep -f "$agent" >/dev/null || "$agent" &
+    break
+  fi
+done
+
+# Bars: one per connected monitor
+"$HOME/.config/polybar/launch.sh"

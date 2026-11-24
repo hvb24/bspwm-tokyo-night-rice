@@ -1,0 +1,11 @@
+/* Compact action menu. Inherits the Spotlight look; no search line, monospace for aligned columns. */
+@import "custom.rasi"
+
+* { font: "FiraCode Nerd Font 11"; }
+window { width: 420px; y-offset: 0px; }
+mainbox { children: [ message, listview ]; }
+message { padding: 14px 22px; border: 0; background-color: transparent; }
+textbox { text-color: @fg-muted; }
+listview { lines: 6; border: 1px 0 0; padding: 10px; }
+element { padding: 12px 16px; }
+element-icon { size: 0; }

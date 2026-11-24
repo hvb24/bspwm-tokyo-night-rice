@@ -1,0 +1,107 @@
+# Alacritty - Tokyo Night. Colours/bell live in theme.toml (generated from ~/.config/theme/palette.sh).
+[general]
+import = ["~/.config/alacritty/theme.toml"]
+live_config_reload = true
+
+[font]
+size = 13.0
+builtin_box_drawing = true
+offset = { x = 0, y = 3 }          # a little extra line height
+glyph_offset = { x = 0, y = 1 }
+
+[font.normal]
+family = "FiraCode Nerd Font"
+style = "Regular"
+
+[font.bold]
+style = "Bold"
+
+[font.italic]
+style = "Italic"
+
+[window]
+padding = { x = 14, y = 12 }
+dynamic_padding = true             # centre the grid in leftover space (nice in tiled windows)
+decorations = "None"               # bspwm draws no title bars anyway
+opacity = 0.9                      # picom blurs what is behind; Ctrl+Shift+O toggles solid
+startup_mode = "Windowed"          # the tiling WM sizes windows
+title = "Alacritty Terminal"
+dynamic_title = true
+
+[cursor]
+style = { shape = "Beam", blinking = "On" }
+vi_mode_style = { shape = "Block", blinking = "Off" }
+blink_interval = 600
+blink_timeout = 0                  # keep blinking
+unfocused_hollow = true
+thickness = 0.18
+
+[selection]
+save_to_clipboard = true           # selecting text copies it
+
+[terminal]
+# shell is taken from $SHELL (set shell = "/path/to/shell" to override)
+osc52 = "CopyPaste"                # lets vim/tmux copy to the system clipboard
+
+[scrolling]
+history = 20000
+multiplier = 3
+
+[mouse]
+hide_when_typing = true
+
+[colors]
+draw_bold_text_with_bright_colors = false
+
+# ---- hints: Ctrl+Shift+U opens a URL (or click one), Ctrl+Shift+G copies a git hash ----
+[[hints.enabled]]
+regex = '(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001f\u007f-\u009f<>"\s{-}\^⟨⟩`\\]+'
+hyperlinks = true
+post_processing = true
+persist = false
+command = "xdg-open"
+binding = { key = "U", mods = "Control|Shift" }
+mouse = { enabled = true, mods = "None" }
+
+[[hints.enabled]]
+regex = '\b[0-9a-f]{7,40}\b'
+action = "Copy"
+post_processing = false
+persist = false
+binding = { key = "G", mods = "Control|Shift" }
+
+# ---- keybindings (defaults like Ctrl+Shift+F search, Ctrl+Shift+Space vi-mode, Ctrl +/- zoom still apply) ----
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "Q"
+mods = "Control|Shift"
+action = "Quit"
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Control|Shift"
+action = "CreateNewWindow"         # opens in the current directory
+
+[[keyboard.bindings]]
+key = "O"
+mods = "Control|Shift"
+command = { program = "sh", args = ["-c", "$HOME/.config/alacritty/toggle-opacity.sh"] }
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"
+
+[debug]
+render_timer = false
+log_level = "Warn"
+print_events = false

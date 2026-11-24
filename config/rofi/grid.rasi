@@ -1,0 +1,82 @@
+/* Fullscreen app grid (Launchpad style): rofi -show drun -theme grid.rasi. Picom blurs the backdrop. */
+@import "colors.rasi"
+
+* {
+    font:             "Noto Sans 11";
+    background-color: transparent;
+    text-color:       @fg;
+    margin:           0;
+    padding:          0;
+    spacing:          0;
+}
+
+window {
+    transparency:     "real";
+    fullscreen:       true;
+    background-color: @overlay;
+}
+
+mainbox {
+    padding:  7% 14%;
+    spacing:  44px;
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    margin:           0 30%;
+    padding:          12px 20px;
+    spacing:          14px;
+    background-color: @bg-alt;
+    border:           1px;
+    border-color:     @divider;
+    border-radius:    14px;
+    children:         [ textbox-icon, entry ];
+}
+
+textbox-icon {
+    expand:         false;
+    str:            "";
+    font:           "FiraCode Nerd Font Mono 16";
+    text-color:     @accent;
+    vertical-align: 0.5;
+}
+
+entry {
+    placeholder:       "Search";
+    placeholder-color: @fg-muted;
+    cursor-color:      @accent;
+    vertical-align:    0.5;
+}
+
+listview {
+    columns:       6;
+    lines:         4;
+    fixed-height:  true;
+    flow:          horizontal;
+    scrollbar:     false;
+    spacing:       20px;
+}
+
+element {
+    orientation:   vertical;
+    padding:       22px 8px 16px;
+    spacing:       12px;
+    border-radius: 20px;
+    border:        1px;
+    border-color:  transparent;
+}
+
+element selected.normal, element selected.active {
+    background-color: @sel;
+    border-color:     @sel-edge;
+}
+
+element-icon {
+    size:             5.2em;
+    horizontal-align: 0.5;
+}
+
+element-text {
+    horizontal-align: 0.5;
+    highlight:        bold #7aa2f7;
+}
