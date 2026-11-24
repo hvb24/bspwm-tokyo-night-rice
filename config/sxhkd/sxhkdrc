@@ -1,166 +1,54 @@
+# sxhkd keybindings for bspwm.
+# Each binding has a description comment above it, which the cheat sheet (super + F1) shows.
+# Check the file with: config/bspwm/scripts/keys.py --check
+
 ####################################
-#          GLOBAL HOTKEYS         #
+#            GENERAL               #
 ####################################
 
-# Open Alacritty terminal
+# Open a terminal (Alacritty)
 super + Return
     alacritty
 
-# Launch combined launcher (windows + apps + commands)
+# Launcher: apps first. Ctrl+Tab switches to windows, commands or files
 super + @space
     ~/.config/rofi/scripts/launcher.sh
 
-# Reload sxhkd configuration
+# Keyboard cheat sheet (this list). Enter on a row runs its action when it is safe
+super + F1
+    ~/.config/bspwm/scripts/show_keys.sh
+
+# Reload this file after editing it
 super + Escape
     pkill -USR1 -x sxhkd
 
-####################################
-#         BSPWM CONTROLS          #
-####################################
+# Lock the screen (needs i3lock)
+ctrl + alt + l
+    ~/.config/bspwm/scripts/actions.sh lock
 
-# Quit/Restart bspwm
-super + alt + {q,r}
-    bspc {quit,wm -r}
+# Power menu: suspend, log out, reboot or shut down (confirms first)
+super + shift + q
+    ~/.config/rofi/scripts/powermenu.sh
 
-# Close window/Kill node
-super + q
-    bspc node -{c,k}
-
-# Toggle between tiled and monocle layout
-super + m
-    bspc desktop -l next
-
-# Send marked node to preselected node
-super + y
-    bspc node newest.marked.local -n newest.!automatic.local
-
-# Swap current node with biggest window
-super + g
-    bspc node -s biggest.window
+# Floating terminal, centred, for quick commands
+super + shift + Return
+    alacritty --class FloatTerm
 
 ####################################
-#        WINDOW STATE/FLAGS       #
+#             APPS                 #
 ####################################
 
-# Set window state (tiled/pseudo_tiled/floating/fullscreen)
-super + {t,shift + t,s,f}
-    bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
-
-# Toggle node flags (marked/locked/sticky/private)
-super + ctrl + {m,x,y,z}
-    bspc node -g {marked,locked,sticky,private}
-
-####################################
-#     FOCUS & WINDOW MOVEMENT     #
-####################################
-
-# Focus or swap window in direction
-super + {_,shift + }{h,j,k,l}
-    bspc node -{f,s} {west,south,north,east}
-
-# Focus node via path jump
-super + {p,b,comma,period}
-    bspc node -f @{parent,brother,first,second}
-
-# Focus next/previous window
-super + {_,shift + }c
-    bspc node -f {next,prev}.local.!hidden.window
-
-# Focus next/previous desktop
-super + bracket{left,right}
-    bspc desktop -f {prev,next}.local
-
-# Focus last node/desktop
-super + {grave,Tab}
-    bspc {node,desktop} -f last
-
-# Focus older/newer node in history
-super + {o,i}
-    bspc wm -h off; \
-    bspc node {older,newer} -f; \
-    bspc wm -h on
-
-# Focus or move to desktop 1-10
-super + {_,shift + }{1-9,0}
-    bspc {desktop -f,node -d} '^{1-9,10}'
-
-####################################
-#           PRESELECTION          #
-####################################
-
-# Preselect split direction
-super + ctrl + {h,j,k,l}
-    bspc node -p {west,south,north,east}
-
-# Preselect split ratio
-super + ctrl + {1-9}
-    bspc node -o 0.{1-9}
-
-# Cancel node preselection
-super + ctrl + space
-    bspc node -p cancel
-
-# Cancel all desktop preselections
-super + ctrl + shift + space
-    bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
-
-####################################
-#     FLOATING MOVE / RESIZE      #
-####################################
-
-# Expand window edge
-super + alt + {h,j,k,l}
-    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
-
-# Contract window edge
-super + alt + shift + {h,j,k,l}
-    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
-
-# Move floating window
-super + {Left,Down,Up,Right}
-    bspc node -v {-20 0,0 20,0 -20,20 0}
-
-####################################
-#          CUSTOMIZATION          #
-####################################
-
-# Set random wallpaper (fixed Tokyo Night palette, no pywal recolouring)
-super + w
-    ~/.config/theme/wallpaper.sh random
-
-# Show keybindings popup
-super + F1
-    ~/.config/bspwm/scripts/show_keys.sh
-####################################
-#        APPS & MEDIA (rice)       #
-####################################
-
-# File manager
+# File manager (Thunar)
 super + e
     thunar
 
-# Browser
+# Web browser (Firefox)
 super + shift + b
     firefox
 
-# Code editor
+# Code editor (VS Code)
 super + shift + d
     code
-
-# Volume up/down/mute
-XF86Audio{RaiseVolume,LowerVolume}
-    pactl set-sink-volume @DEFAULT_SINK@ {+5%,-5%}
-
-XF86AudioMute
-    pactl set-sink-mute @DEFAULT_SINK@ toggle
-
-####################################
-#         ROFI MENUS (rice)        #
-####################################
-
-# Window switcher
-alt + Tab
-    rofi -show window -m -4
 
 # Run a shell command
 super + shift + space
@@ -170,14 +58,170 @@ super + shift + space
 super + shift + f
     rofi -show filebrowser -m -4
 
-# Power menu
-super + shift + q
-    ~/.config/rofi/scripts/powermenu.sh
+# Window switcher (windows only)
+alt + Tab
+    rofi -show window -m -4
 
-# Wallpaper picker
+# Fullscreen app grid (Launchpad style)
+super + shift + a
+    ~/.config/rofi/scripts/appgrid.sh
+
+# Wi-Fi menu: join or leave a network (needs NetworkManager)
+super + ctrl + n
+    ~/.config/rofi/scripts/wifi.sh
+
+# Bluetooth menu: connect or disconnect paired devices (needs bluez)
+super + ctrl + b
+    ~/.config/polybar/scripts/bluetooth.sh menu
+
+####################################
+#        WINDOWS (BSPWM)           #
+####################################
+
+# Close the focused window
+super + q
+    bspc node -c
+
+# Force-close the focused window (may lose unsaved work)
+super + alt + x
+    bspc node -k
+
+# Toggle monocle layout (one window fills the desktop)
+super + m
+    bspc desktop -l next
+
+# Tiled, pseudo-tiled, floating or fullscreen for the focused window
+super + {t,shift + t,s,f}
+    bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# Mark, lock, make sticky or make private the focused window
+super + ctrl + {m,x,y,z}
+    bspc node -g {marked,locked,sticky,private}
+
+# Send the marked window into the preselected spot
+super + y
+    bspc node newest.marked.local -n newest.!automatic.local
+
+# Swap the focused window with the biggest window
+super + g
+    bspc node -s biggest.window
+
+# Move the focused window to the other monitor
+super + shift + {Left,Right}
+    bspc node -m {prev,next} --follow
+
+# Focus a window in a direction (with shift: swap it instead)
+super + {_,shift + }{h,j,k,l}
+    bspc node -{f,s} {west,south,north,east}
+
+# Focus next or previous window (with shift: previous)
+super + {_,shift + }c
+    bspc node -f {next,prev}.local.!hidden.window
+
+# Focus the parent, brother, first or second window
+super + {p,b,comma,period}
+    bspc node -f @{parent,brother,first,second}
+
+# Focus the last window (`) or the last desktop (Tab)
+super + {grave,Tab}
+    bspc {node,desktop} -f last
+
+# Focus the older window in focus history
+super + o
+    bspc node older -f
+
+# Focus the newer window in focus history
+super + i
+    bspc node newer -f
+
+# Grow an edge of the focused window
+super + alt + {h,j,k,l}
+    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# Shrink an edge of the focused window
+super + alt + shift + {h,j,k,l}
+    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# Move the focused floating window
+super + {Left,Down,Up,Right}
+    bspc node -v {-20 0,0 20,0 -20,20 0}
+
+# Choose where the next window splits (h, j, k, l)
+super + ctrl + {h,j,k,l}
+    bspc node -p {west,south,north,east}
+
+# Choose the split ratio for the next window (1 to 9 = 10% to 90%)
+super + ctrl + {1-9}
+    bspc node -o 0.{1-9}
+
+# Cancel the split choice on the focused window
+super + ctrl + space
+    bspc node -p cancel
+
+# Cancel all split choices on this desktop
+super + ctrl + shift + space
+    bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+# Quit bspwm (ends the session)
+super + alt + q
+    bspc quit
+
+# Restart bspwm in place
+super + alt + r
+    bspc wm -r
+
+####################################
+#           DESKTOPS               #
+####################################
+
+# Go to desktop 1-9 (0 = 10). With shift, send the focused window there
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f,node -d} '^{1-9,10}'
+
+# Previous or next desktop
+super + bracket{left,right}
+    bspc desktop -f {prev,next}.local
+
+####################################
+#        WALLPAPER & SCREEN        #
+####################################
+
+# Random wallpaper from ~/Pictures/wallpapers
+super + w
+    ~/.config/theme/wallpaper.sh random
+
+# Wallpaper picker with thumbnails
 super + shift + w
     ~/.config/rofi/scripts/wallpaper-picker.sh
 
-# App grid (fullscreen Launchpad-style)
-super + shift + a
-    ~/.config/rofi/scripts/appgrid.sh
+# Screenshot a selected area (saved to ~/Pictures/Screenshots and copied; needs maim)
+Print
+    ~/.config/bspwm/scripts/actions.sh screenshot area
+
+# Screenshot the whole screen (needs maim)
+shift + Print
+    ~/.config/bspwm/scripts/actions.sh screenshot full
+
+####################################
+#        VOLUME & MEDIA            #
+####################################
+
+# Volume up or down by 5%
+XF86Audio{RaiseVolume,LowerVolume}
+    pactl set-sink-volume @DEFAULT_SINK@ {+5%,-5%}
+
+# Mute or unmute the speakers
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# Mute or unmute the microphone
+XF86AudioMicMute
+    pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+# Screen brightness up or down by 5% (needs brightnessctl)
+XF86MonBrightness{Up,Down}
+    ~/.config/bspwm/scripts/actions.sh brightness {up,down}
+
+# Play or pause, next track, previous track (needs playerctl)
+XF86Audio{Play,Next,Prev}
+    ~/.config/bspwm/scripts/actions.sh media {play-pause,next,previous}

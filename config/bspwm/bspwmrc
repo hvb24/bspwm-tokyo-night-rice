@@ -30,6 +30,7 @@ bspc rule -a discord desktop='^4'
 bspc rule -a Pavucontrol state=floating
 bspc rule -a Nm-connection-editor state=floating
 bspc rule -a Screenkey manage=off
+bspc rule -a FloatTerm state=floating center=on
 
 # Colours (generated from theme/palette.sh) and wallpaper
 "$HOME/.config/theme/apply.sh" >/dev/null 2>&1
